@@ -47,6 +47,43 @@ public class NiceRecipe {
     letRest();
   }
 
+  private void putFlourInBigMixingBowl() {
+    putIn(flour, bigMixingBowl);
+  }
+
+  private void putSaltInBigMixingBowl() {
+    putIn(salt, bigMixingBowl);
+  }
+
+  private void putSugarInBigMixingBowl() {
+    putIn(sugar, bigMixingBowl);
+  }
+
+  private void meltButter() {
+    moveArmToLeft();
+    closeHand(butter);
+    moveArmToRight();
+    openHand(butter, microwave);
+    butter.s = "melted";
+  }
+
+  private void putButterInBigMixingBowl() {
+    putIn(butter, bigMixingBowl);
+  }
+
+  private void scrambleEggs() {
+    moveArmToLeft();
+    closeHand(eggs);
+    moveArmToRight();
+    openHand(eggs, smallMixingBowl);
+    mixSmallMixingBowl();
+    eggs.s = "scrambled";
+  }
+
+  private void putEggsInBigMixingBowl() {
+    putIn(eggs, bigMixingBowl);
+  }
+
   private void slowlyPutMilkInMixingBowl() {
     double remainingQtyOfMilkToMix = milk.q;
 
@@ -56,14 +93,6 @@ public class NiceRecipe {
       remainingQtyOfMilkToMix -= someMilkQty;
       mixBigBowl();
     }
-  }
-
-  private void letRest() {
-    takeABreakDuring(60);
-  }
-
-  private void takeABreakDuring(int minutes) {
-    cooker.doAction(new CookerAction(String.format("chillin during %s minutes", minutes)));
   }
 
   private void putSomeMilkInBigMixingBowl(double someMilkQty) {
@@ -77,21 +106,39 @@ public class NiceRecipe {
     switchUtensilTo(null);
   }
 
-  private void meltButter() {
-    moveArmToLeft();
-    closeHand(butter);
-    moveArmToRight();
-    openHand(butter, microwave);
-    butter.s = "melted";
+  private void putIn(Ingredient ingredient, Utensil bowl) {
+    takeIngredient(ingredient);
+    releaseIngredientInBowl(ingredient, bowl);
   }
 
-  private void scrambleEggs() {
+  private void takeIngredient(Ingredient ingredient) {
     moveArmToLeft();
-    closeHand(eggs);
+    closeHand(ingredient);
+  }
+
+  private void releaseIngredientInBowl(Ingredient ingredient, Utensil bowl) {
     moveArmToRight();
-    openHand(eggs, smallMixingBowl);
-    mixSmallMixingBowl();
-    eggs.s = "scrambled";
+    openHand(ingredient, bowl);
+  }
+
+  private void letRest() {
+    takeABreakDuring(60);
+  }
+
+  private void moveArmToLeft() {
+    cooker.doAction(new CookerAction("move arm to left"));
+  }
+
+  private void closeHand(Ingredient ingredient) {
+    cooker.doAction(new CookerAction("close hand to take " + ingredient));
+  }
+
+  private void moveArmToRight() {
+    cooker.doAction(new CookerAction("move arm to right"));
+  }
+
+  private void openHand(Ingredient ingredient, Utensil utensil) {
+    cooker.doAction(new CookerAction(String.format("open hand to release %s in %s", ingredient, utensil)));
   }
 
   private void mixSmallMixingBowl() {
@@ -108,55 +155,8 @@ public class NiceRecipe {
     cooker.doAction(new CookerAction("change utensil to " + (utensil == null ? "nothing" : utensil)));
   }
 
-  private void putEggsInBigMixingBowl() {
-    putIn(eggs, bigMixingBowl);
-  }
-
-  private void putButterInBigMixingBowl() {
-    putIn(butter, bigMixingBowl);
-  }
-
-  private void putSugarInBigMixingBowl() {
-    putIn(sugar, bigMixingBowl);
-  }
-
-  private void putSaltInBigMixingBowl() {
-    putIn(salt, bigMixingBowl);
-  }
-
-  private void putFlourInBigMixingBowl() {
-    putIn(flour, bigMixingBowl);
-  }
-
-  private void putIn(Ingredient ingredient, Utensil bowl) {
-    takeIngredient(ingredient);
-    releaseIngredientInBowl(ingredient, bowl);
-  }
-
-  private void releaseIngredientInBowl(Ingredient ingredient, Utensil bowl) {
-    moveArmToRight();
-    openHand(ingredient, bowl);
-  }
-
-  private void openHand(Ingredient ingredient, Utensil utensil) {
-    cooker.doAction(new CookerAction(String.format("open hand to release %s in %s", ingredient, utensil)));
-  }
-
-  private void moveArmToRight() {
-    cooker.doAction(new CookerAction("move arm to right"));
-  }
-
-  private void takeIngredient(Ingredient ingredient) {
-    moveArmToLeft();
-    closeHand(ingredient);
-  }
-
-  private void closeHand(Ingredient ingredient) {
-    cooker.doAction(new CookerAction("close hand to take " + ingredient));
-  }
-
-  private void moveArmToLeft() {
-    cooker.doAction(new CookerAction("move arm to left"));
+  private void takeABreakDuring(int minutes) {
+    cooker.doAction(new CookerAction(String.format("chillin during %s minutes", minutes)));
   }
 
 }
