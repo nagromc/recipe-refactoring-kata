@@ -39,6 +39,9 @@ public class MessyRecipe {
     this.c = cooker;
   }
 
+  /**
+   * This method has been copied from another recipe
+   */
   public void doRecipe() {
     // étaler la pâte dans un moule
     moveArmToLeft();
