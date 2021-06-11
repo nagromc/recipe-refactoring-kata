@@ -13,6 +13,7 @@ public class TheUltimateAutocooker3000Cooker implements Cooker {
 
   @Override
   public void doAction(CookerAction action) {
+    // let’s just pretend that the action is a very complex sequence of things the robot needs to do
     actions.add(action);
   }
 
